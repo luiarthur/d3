@@ -2,49 +2,53 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style.css">
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
-    <script type="text/javascript">
-      function draw(data) {
-      
-      /*
-        D3.js setup code
-      */
-
-          "use strict";
-          var margin = 75,
-              width = 1400 - margin,
-              height = 600 - margin;
-
-          var svg = d3.select("body")
-            .append("svg")
-              .attr("width", width + margin)
-              .attr("height", height + margin)
-            .append('g')
-                .attr('class','chart');
-
-          /* D3 code */
-
-          /* Read in data */
-          d3.select('svg')
-            .selectAll("circle")
-            .data(data)
-            .enter()
-            .append("circle");
-
-
-        };
-      </script>
-  </head>
-<body>
-  <h1 align="center"> World Cup </h1>
   <script type="text/javascript">
-  /*
-    Use D3 (not dimple.js) to load the TSV file
-    and pass the contents of it to the draw function
-  */
-  d3.tsv("world_cup.tsv", draw);
+    function draw(data) {
+      /* Standard Setup */
+      "use strict"; /* To throw errors */
+      var margin=75, width=1400-margin, height=600-margin;
 
+      var svg = d3.select("body")
+        .append("svg").attr("width", width + margin).attr("height", height + margin).append('g').attr('class','chart');
+      /* End of Standard Setup */
+
+      /* Read in data */
+      d3.select('svg').selectAll("circle").data(data).enter().append("circle");
+
+      /* Set radius and color of circles */
+      var radius=2, color='red';
+      /* get x,y lims */
+      var xlim = d3.extent(data,function(d) { return d['date']; });
+      var ylim = d3.extent(data,function(d) { return d['attendance']; });
+      /* get x,y lims mapping x,y -> pixels */
+      var xscale = d3.time.scale().range([margin,width]).domain(xlim);
+      var yscale = d3.scale.linear().range([height,margin]).domain(ylim);
+      /* get x,y axis*/
+      var xaxis = d3.svg.axis().scale(xscale).ticks(d3.time.years,2); /*tick mark per 2 years*/
+      var yaxis = d3.svg.axis().scale(yscale).orient("left");
+
+      d3.select("svg").append('g').attr('class','x axis').attr('transform',"translate(0,"+height+")").call(xaxis);
+      d3.select("svg").append('g').attr('class','y axis').attr('transform',"translate("+margin+",0)").call(yaxis);
+      
+      d3.selectAll('circle')
+        .attr('cx',function(d) {return xscale(d['date']);})
+        .attr('cy',function(d) {return yscale(d['attendance']);})
+        .attr('r',radius).attr('fill',color);
+    };
+  </script>
+</head>
+<body>
+  <h2 align="center"> World Cup </h2>
+  <script type="text/javascript">
+    format = d3.time.format("%d-%m-%Y (%H:%M h)"); /* 16-09-1989 (17:00 h) */
+    d3.tsv("world_cup.tsv", function(d) {  /* anonymous func applied to each data-row passed to draw*/
+      d['date'] = format.parse(d['date']); /* formats date */
+      d['attendance'] = +d['attendance'];  /* converts string attendance to Integer */
+      return d;
+    }, draw);
   </script>
 </body>
 </html>
