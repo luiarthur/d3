@@ -23,16 +23,16 @@
             .append('g')
                 .attr('class','chart');
 
-      /*
-        Dimple.js Chart construction code
-      */
+          /* D3 code */
 
-          var myChart = new dimple.chart(svg, data);
-          var x = myChart.addTimeAxis("x", "year"); 
-          myChart.addMeasureAxis("y", "attendance");
-          myChart.addSeries(null, dimple.plot.scatter);
-          myChart.addSeries(null, dimple.plot.line);
-          myChart.draw();
+          /* Read in data */
+          d3.select('svg')
+            .selectAll("circle")
+            .data(data)
+            .enter()
+            .append("circle");
+
+
         };
       </script>
   </head>
