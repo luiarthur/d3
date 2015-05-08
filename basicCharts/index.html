@@ -10,19 +10,18 @@
       /* Standard Setup */
       "use strict"; /* To throw errors */
       var margin=75, width=1400-margin, height=600-margin;
-
       var svg = d3.select("body")
         .append("svg").attr("width", width + margin).attr("height", height + margin).append('g').attr('class','chart');
       /* End of Standard Setup */
 
       /* Read in data */
-      d3.select('svg').selectAll("circle").data(data).enter().append("circle");
+      svg.selectAll("circle").data(data).enter().append("circle");
 
       /* Set radius and color of circles */
       var radius=2, color='red';
       /* get x,y lims */
-      var xlim = d3.extent(data,function(d) { return d['date']; });
-      var ylim = d3.extent(data,function(d) { return d['attendance']; });
+      var xlim = d3.extent(data,function(d) { return d.date; });
+      var ylim = d3.extent(data,function(d) { return d.attendance; });
       /* get x,y lims mapping x,y -> pixels */
       var xscale = d3.time.scale().range([margin,width]).domain(xlim);
       var yscale = d3.scale.linear().range([height,margin]).domain(ylim);
@@ -30,8 +29,8 @@
       var xaxis = d3.svg.axis().scale(xscale).ticks(d3.time.years,2); /*tick mark per 2 years*/
       var yaxis = d3.svg.axis().scale(yscale).orient("left");
 
-      d3.select("svg").append('g').attr('class','x axis').attr('transform',"translate(0,"+height+")").call(xaxis);
-      d3.select("svg").append('g').attr('class','y axis').attr('transform',"translate("+margin+",0)").call(yaxis);
+      svg.append('g').attr('class','x axis').attr('transform',"translate(0,"+height+")").call(xaxis);
+      svg.append('g').attr('class','y axis').attr('transform',"translate("+margin+",0)").call(yaxis);
       
       d3.selectAll('circle')
         .attr('cx',function(d) {return xscale(d['date']);})
