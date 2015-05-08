@@ -64,12 +64,6 @@
     /*x.domain(d3.extent(data, function(d) { return +d.tau; }));*/
     x.domain([0,400]);
     y.domain([0,100]);
-    /*
-    y.domain([
-      d3.min(curves, function(c) { return d3.min(c.values, function(v) { return v.prob; }); }),
-      d3.max(curves, function(c) { return d3.max(c.values, function(v) { return v.prob; }); })
-    ]);
-    */
 
     debugger;
     /*Add x,y-axis*/
@@ -88,3 +82,4 @@
          .attr("x", 3).attr("dy", ".35em").text(function(d) { return d.name; });
   });
 </script>
+</body>
