@@ -14,7 +14,7 @@ multiLinePlot <- function(xY,linkToTemplate=NULL) {
   html <- readLines("myMultiLinePlot/index.html")
   dataPathLines <- grep("<myDataPath>",html)
   html <- gsub("<myDataPath>","myDat.tsv",html)
-  html <- gsub("<myXname>",colnames(out)[1],html)
+  html <- gsub("<myXname>",myColNames[1],html)
   writeLines(html,"myMultiLinePlot/index.html")
   system('cd myMultiLinePlot; python -m webbrowser -t "http://localhost:4104"')
   system("cd myMultiLinePlot; python -m SimpleHTTPServer 4104")
