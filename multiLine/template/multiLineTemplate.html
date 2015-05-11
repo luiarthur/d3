@@ -53,17 +53,17 @@
 
   /* Read in Data and Plot */
   /*d3.tsv("sim.tsv", function(data) {*/
-  d3.tsv("../data/sim1.tsv", function(data) {
+  d3.tsv("<myDataPath>", function(data) {
     /*debugger;*/
     /* maps colors to each city */
       /* d3.keys(data[0]) gets the column headers*/
       /* d3.keys(data[0]).filter(etc) gets all all the column headers except the first one, "date"*/
 
-    color.domain(d3.keys(data[0]).filter(function(key) { return key !== "x"; }));
+    color.domain(d3.keys(data[0]).filter(function(key) { return key !== "<myXname>"; }));
     var curves = color.domain().map(function(name) {
       return {
         name: name,
-        values: data.map(function(d) { return {xval: +d["x"], yval: +d[name]}; })
+        values: data.map(function(d) { return {xval: +d["<myXname>"], yval: +d[name]}; })
       };
     });
 
