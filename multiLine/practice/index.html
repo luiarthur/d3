@@ -1,5 +1,6 @@
 <!-- http://bl.ocks.org/mbostock/8033015
      http://bl.ocks.org/AlexanderGraf/5416979
+     Below is my multiline script with highlights on mouseovers.
 -->
 <!DOCTYPE html>
 <meta charset="utf-8">
@@ -46,28 +47,34 @@
   var color = d3.scale.category10();
   var xAxis = d3.svg.axis().scale(x).orient("bottom");
   var yAxis = d3.svg.axis().scale(y).orient("left");
-  var line = d3.svg.line().interpolate("basis")
-      .x(function(d) { return x(d.tau); })
-      .y(function(d) { return y(d.prob); });
+  var myline = d3.svg.line().interpolate("basis")
+      .x(function(d) { return x(d.xval); })
+      .y(function(d) { return y(d.yval); });
 
   /* Read in Data and Plot */
-  d3.tsv("sim.tsv", function(data) {
+  /*d3.tsv("sim.tsv", function(data) {*/
+  d3.tsv("../data/sim1.tsv", function(data) {
     /*debugger;*/
     /* maps colors to each city */
       /* d3.keys(data[0]) gets the column headers*/
       /* d3.keys(data[0]).filter(etc) gets all all the column headers except the first one, "date"*/
 
-    color.domain(d3.keys(data[0]).filter(function(key) { return key !== "tau"; }));
+    color.domain(d3.keys(data[0]).filter(function(key) { return key !== "x"; }));
     var curves = color.domain().map(function(name) {
       return {
         name: name,
-        values: data.map(function(d) { return {tau: +d["tau"], prob: +d[name]}; })
+        values: data.map(function(d) { return {xval: +d["x"], yval: +d[name]}; })
       };
     });
 
-    /*x.domain(d3.extent(data, function(d) { return +d.tau; }));*/
-    x.domain([0,400]);
-    y.domain([0,100]);
+    /* Hard coded bounds: x,y-lim
+    x.domain([0,100]); y.domain([0,100]);
+    */
+    x.domain(d3.extent(data, function(d) { return +d.x; }));
+    y.domain([
+      d3.min(curves, function(c) { return d3.min(c.values, function(v) { return v.yval; }); }),
+      d3.max(curves, function(c) { return d3.max(c.values, function(v) { return v.yval; }); })
+    ]);
 
     /*debugger;*/
     /*Add x,y-axis*/
@@ -76,14 +83,15 @@
 
     /*Add curves*/
     var curve = svg.selectAll(".city").data(curves).enter().append("g").attr("class", "city");
-    curve.append("path").attr("class", "line").attr("d", function(d) { return line(d.values); })
-         .style("stroke", function(d) { return color(d.name); });
+    curve.append("path").attr("class", "line").attr("d", function(d) { return myline(d.values); })
+         .style("stroke", function(d) { return "grey"/*color(d.name)*/; });
 
     /*Add names of cities to curves*/
     curve.append("text")
          .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
-         .attr("transform", function(d) { return "translate(" + x(d.value.tau) + "," + y(d.value.prob) + ")"; })
+         .attr("transform", function(d) { return "translate(" + x(d.value.xval) + "," + y(d.value.yval) + ")"; })
          .attr("x", 3).attr("dy", ".35em").text(function(d) { return d.name; });
+
 
     /* mouseover stuff below*/
     curve.style("opacity",".3").on("mouseover",mouseover).on("mouseout",mouseout);
