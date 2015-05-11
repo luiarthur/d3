@@ -3,7 +3,7 @@ multiLinePlot <- function(xY,linkToTemplate=NULL) {
   # The remaining columns are the different y vectors.
   # The function currently only works properly if the x column is named
   # and the Y columns are all uniquely named
-  if (any(colnames(xY)=="")) {
+  if (any(colnames(xY)=="") || any(is.null(colnames(xY)))) {
     colnames(xY) <- c("x",paste0("y",1:ncol(xY[,-1])))
   }
   system("mkdir -p myMultiLinePlot")
