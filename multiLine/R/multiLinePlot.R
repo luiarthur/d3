@@ -19,14 +19,14 @@ multiLinePlot <- function(xY,xlim=NULL,ylim=NULL,main=NULL,linkToTemplate=NULL) 
   html <- gsub("<myDataPath>","myDat.tsv",html)
   html <- gsub("<myXname>",myColNames[1],html)
 
-  if (is.null(xlim)) {
+  if (!is.null(xlim)) {
     html <- gsub("<myXLimLower>",toString(xlim[1]),html)
     html <- gsub("<myXLimUpper>",toString(xlim[2]),html)
   } else {
     html <- gsub("<myXLimLower>",toString(min(xY[,1])),html)
     html <- gsub("<myXLimUpper>",toString(max(xY[,1])),html)
   }
-  if (is.null(ylim))  {
+  if (!is.null(ylim))  {
     html <- gsub("<myYLimLower>",toString(ylim[1]),html)
     html <- gsub("<myYLimUpper>",toString(ylim[2]),html)
   } else {
@@ -34,7 +34,7 @@ multiLinePlot <- function(xY,xlim=NULL,ylim=NULL,main=NULL,linkToTemplate=NULL) 
     html <- gsub("<myYLimUpper>",toString(max(xY[,-1])),html)
   }
 
-  if (is.null(main)) html <- gsub("<!--myMAIN-->",paste0("<h1>main</h1>"),html)
+  if (!is.null(main)) html <- gsub("<!--myMAIN-->",paste0("<h1>main</h1>"),html)
 
   writeLines(html,"myMultiLinePlot/index.html")
   system('cd myMultiLinePlot; python -m webbrowser -t "http://localhost:4104"')
