@@ -20,18 +20,18 @@ multiLinePlot <- function(xY,xlim=NULL,ylim=NULL,main=NULL,linkToTemplate=NULL) 
   html <- gsub("<myXname>",myColNames[1],html)
 
   if (is.null(xlim)) {
-    html <- gsub("<myXLimLower>",xlim[1],html)
-    html <- gsub("<myXLimUpper>",xlim[2],html)
+    html <- gsub("<myXLimLower>",toString(xlim[1]),html)
+    html <- gsub("<myXLimUpper>",toString(xlim[2]),html)
   } else {
-    html <- gsub("<myXLimLower>",min(xY[,1]),html)
-    html <- gsub("<myXLimUpper>",max(xY[,1]),html)
+    html <- gsub("<myXLimLower>",toString(min(xY[,1])),html)
+    html <- gsub("<myXLimUpper>",toString(max(xY[,1])),html)
   }
   if (is.null(ylim))  {
-    html <- gsub("<myYLimLower>",ylim[1],html)
-    html <- gsub("<myYLimUpper>",ylim[2],html)
+    html <- gsub("<myYLimLower>",toString(ylim[1]),html)
+    html <- gsub("<myYLimUpper>",toString(ylim[2]),html)
   } else {
-    html <- gsub("<myYLimLower>",min(xY[,-1]),html)
-    html <- gsub("<myYLimUpper>",max(xY[,-1]),html)
+    html <- gsub("<myYLimLower>",toString(min(xY[,-1])),html)
+    html <- gsub("<myYLimUpper>",toString(max(xY[,-1])),html)
   }
 
   if (is.null(main)) html <- gsub("<!--myMAIN-->",paste0("<h1>main</h1>"),html)
