@@ -34,7 +34,7 @@ multiLinePlot <- function(xY,xlim=NULL,ylim=NULL,main=NULL,linkToTemplate=NULL) 
     html <- gsub("<myYLimUpper>",toString(max(xY[,-1])),html)
   }
 
-  if (!is.null(main)) html <- gsub("<!--myMAIN-->",paste0("<h1>main</h1>"),html)
+  if (!is.null(main)) html <- gsub("<!--myMAIN-->",paste0("<h1>",main,"</h1>"),html)
 
   writeLines(html,"myMultiLinePlot/index.html")
   system('cd myMultiLinePlot; python -m webbrowser -t "http://localhost:4104"')
