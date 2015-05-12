@@ -1,4 +1,4 @@
-multiLinePlot <- function(xY,linkToTemplate=NULL) { 
+multiLinePlot <- function(xY,xlim=NULL,ylim=NULL,main=NULL,linkToTemplate=NULL) { 
   # xY is a matrix with first column being a vector of x values, common across all y's.
   # The remaining columns are the different y vectors.
   # The function currently only works properly if the x column is named
@@ -18,6 +18,24 @@ multiLinePlot <- function(xY,linkToTemplate=NULL) {
   dataPathLines <- grep("<myDataPath>",html)
   html <- gsub("<myDataPath>","myDat.tsv",html)
   html <- gsub("<myXname>",myColNames[1],html)
+
+  if (is.null(xlim)) {
+    html <- gsub("<myXLimLower>",xlim[1],html)
+    html <- gsub("<myXLimUpper>",xlim[2],html)
+  } else {
+    html <- gsub("<myXLimLower>",min(xY[,1]),html)
+    html <- gsub("<myXLimUpper>",max(xY[,1]),html)
+  }
+  if (is.null(ylim))  {
+    html <- gsub("<myYLimLower>",ylim[1],html)
+    html <- gsub("<myYLimUpper>",ylim[2],html)
+  } else {
+    html <- gsub("<myYLimLower>",min(xY[,-1]),html)
+    html <- gsub("<myYLimUpper>",max(xY[,-1]),html)
+  }
+
+  if (is.null(main)) html <- gsub("<!--myMAIN-->",paste0("<h1>main</h1>"),html)
+
   writeLines(html,"myMultiLinePlot/index.html")
   system('cd myMultiLinePlot; python -m webbrowser -t "http://localhost:4104"')
   system("cd myMultiLinePlot; python -m SimpleHTTPServer 4104")
