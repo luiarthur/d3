@@ -8,7 +8,7 @@ multiLinePlot <- function(xY,xlim=NULL,ylim=NULL,main=NULL,linkToTemplate=NULL) 
   }
   system("mkdir -p myMultiLinePlot")
   if (is.null(linkToTemplate)) {
-    system("wget http://luiarthur.github.io/multiLineTemplate.html -O myMultiLinePlot/index.html")
+    system("wget http://luiarthur.github.io/templates/multiLineTemplate.html -O myMultiLinePlot/index.html")
   } else {
     system(paste("cp",linkToTemplate,"myMultiLinePlot/index.html"))
   }
