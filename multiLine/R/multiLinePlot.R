@@ -1,3 +1,4 @@
+# Most up to date version is on studentt. ibpJulia
 multiLinePlot <- function(xY,xlim=NULL,ylim=NULL,main=NULL,linkToTemplate=NULL) { 
   # xY is a matrix with first column being a vector of x values, common across all y's.
   # The remaining columns are the different y vectors.
